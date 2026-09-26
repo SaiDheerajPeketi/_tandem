@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Return to Tandem</title>
+  <script>
+    const fragment = new URLSearchParams(location.hash.slice(1));
+    const query = new URLSearchParams(location.search);
+    const failed = fragment.has("error") || query.has("error");
+    history.replaceState(null, "", location.pathname);
+    addEventListener("DOMContentLoaded", () => {
+      if (failed) {
+        document.querySelector("#message").textContent =
+          "This email link could not be completed. Return to Tandem and try again.";
+      }
+    });
+  </script>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { background: #f4f7f7; color: #16343a; margin: 0; }
+    main { box-sizing: border-box; margin: 12vh auto; max-width: 36rem; padding: 2rem; }
+    h1 { font-size: clamp(2rem, 7vw, 3rem); line-height: 1.1; margin: 0 0 1rem; }
+    p { font-size: 1.1rem; line-height: 1.6; }
+    a { color: #075c67; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Return to Tandem</h1>
+    <p id="message">Your email link has opened. If you were confirming a new account, return to Tandem and sign in with the password you chose.</p>
+    <p>If sign-in does not work, contact <a href="mailto:developer@blackandblue.co.in?subject=Tandem%20account%20help">Black and Blue support</a>. Do not share your password or email link.</p>
+  </main>
+</body>
+</html>
