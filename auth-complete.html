@@ -32,7 +32,7 @@
         passwordForm.hidden = false;
       } else if (accessToken) {
         accessToken = null;
-        setStatus("Email confirmed", "Return to Tandem and sign in with the password you chose in the app.");
+        setStatus("Email confirmed", "Return to Tandem and sign in. If you have not created a password, contact support below to finish setup.");
       } else if (tokenHash && (kind === "email" || kind === "invite")) {
         setStatus("Confirm your Tandem account", "For your security, this link will not activate until you press the button below.");
         confirm.hidden = false;
@@ -63,7 +63,7 @@
             setStatus("Create your password", "Your email is confirmed. Choose a password to finish setting up your Tandem account.");
             passwordForm.hidden = false;
           } else if (kind === "email") {
-            setStatus("Email confirmed", "Return to Tandem and sign in with the password you chose in the app.");
+            setStatus("Email confirmed", "Return to Tandem and sign in. If you have not created a password, contact support below to finish setup.");
           } else {
             throw new Error("No invite session");
           }
