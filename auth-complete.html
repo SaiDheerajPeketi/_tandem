@@ -20,21 +20,38 @@
       const confirm = document.querySelector("#confirm");
       const passwordForm = document.querySelector("#password-form");
       const password = document.querySelector("#password");
+      const passwordLabel = document.querySelector("#password-label");
+      const passwordButton = passwordForm.querySelector("button");
       const setStatus = (heading, detail) => {
         title.textContent = heading;
         message.textContent = detail;
       };
+      const showPasswordForm = () => {
+        const recovery = kind === "recovery";
+        passwordLabel.textContent = recovery ? "Choose a new password" : "Create a password";
+        passwordButton.textContent = recovery ? "Reset password" : "Finish account setup";
+        setStatus(
+          recovery ? "Reset your Tandem password" : "Create your password",
+          recovery
+            ? "Your reset link is verified. Choose a new password to sign in to your existing Tandem account."
+            : "Your invitation is confirmed. Choose a password to finish setting up your Tandem account."
+        );
+        passwordForm.hidden = false;
+      };
 
       if (linkError) {
         setStatus("This link could not be completed", "It may have expired or already been used. Request a fresh email in Tandem, or contact support below.");
-      } else if (accessToken && kind === "invite") {
-        setStatus("Create your password", "Your invitation is confirmed. Choose a password to finish setting up your Tandem account.");
-        passwordForm.hidden = false;
+      } else if (accessToken && (kind === "invite" || kind === "recovery")) {
+        showPasswordForm();
       } else if (accessToken) {
         accessToken = null;
         setStatus("Email confirmed", "Return to Tandem and sign in. If you have not created a password, contact support below to finish setup.");
-      } else if (tokenHash && (kind === "email" || kind === "invite")) {
-        setStatus("Confirm your Tandem account", "For your security, this link will not activate until you press the button below.");
+      } else if (tokenHash && (kind === "email" || kind === "invite" || kind === "recovery")) {
+        setStatus(
+          kind === "recovery" ? "Reset your Tandem password" : "Confirm your Tandem account",
+          "For your security, this link will not activate until you press the button below."
+        );
+        confirm.textContent = kind === "recovery" ? "Continue to password reset" : "Confirm email and continue";
         confirm.hidden = false;
       } else {
         setStatus("Open a fresh email link", "This page needs a valid Tandem invitation or sign-up link. Request a new email in the app.");
@@ -58,10 +75,9 @@
           const result = await response.json();
           tokenHash = null;
           confirm.hidden = true;
-          if (kind === "invite" && result.access_token) {
+          if ((kind === "invite" || kind === "recovery") && result.access_token) {
             accessToken = result.access_token;
-            setStatus("Create your password", "Your email is confirmed. Choose a password to finish setting up your Tandem account.");
-            passwordForm.hidden = false;
+            showPasswordForm();
           } else if (kind === "email") {
             setStatus("Email confirmed", "Return to Tandem and sign in. If you have not created a password, contact support below to finish setup.");
           } else {
@@ -95,7 +111,10 @@
           accessToken = null;
           password.value = "";
           passwordForm.hidden = true;
-          setStatus("Your account is ready", "Return to Tandem and sign in with your email and new password.");
+          setStatus(
+            kind === "recovery" ? "Password updated" : "Your account is ready",
+            "Return to Tandem and sign in with your email and new password."
+          );
         } catch (_) {
           button.disabled = false;
           setStatus("Password not saved", "Please try again. If this invitation has expired, request a fresh one.");
@@ -134,7 +153,7 @@
       <p id="message">Please wait a moment.</p>
       <button id="confirm" type="button" hidden>Confirm email and continue</button>
       <form id="password-form" hidden>
-        <label for="password">Create a password</label>
+        <label id="password-label" for="password">Create a password</label>
         <input id="password" type="password" autocomplete="new-password" minlength="12" required aria-describedby="password-help">
         <p id="password-help">Use at least 12 characters. Your password is sent only to Tandem’s account provider.</p>
         <button type="submit">Finish account setup</button>
