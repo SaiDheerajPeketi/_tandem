@@ -1,6 +1,6 @@
 # Privacy Policy for Tandem
 
-**Effective date:** September 24, 2026  
+**Effective date:** September 27, 2026  
 **Developer:** Black and Blue
 
 Tandem is an Android care-tracking app for parents and other caregivers. It records feeding, sleep, diaper, pumping, growth, milestones, and notes. This policy explains what Tandem processes, why it is used, and the choices available to you.
@@ -9,7 +9,7 @@ Tandem does not sell personal data, show third-party advertising, or make care r
 
 ## 1. Information stored on your device {#privacy}
 
-Tandem can store a baby's name and approximate birth date, caregiver name and role, care events, growth measurements, milestones, notes, edit history, and app preferences. The current release stores these records in app-private Android storage protected with an Android Keystore-backed key. Android backup and device transfer are disabled for Tandem data.
+Tandem can store a baby's name and approximate birth date, caregiver name and role, care events, growth measurements, milestones, notes, edit history, and app preferences in app-private Android storage protected with an Android Keystore-backed key. Android backup and device transfer are disabled for Tandem data. If you use optional Family Pro, the care-log categories described in section 5 can also be synchronized to the family service; the baby's local profile metadata is not synchronized.
 
 You control what you enter. Avoid adding information that is not needed for caregiving.
 
@@ -33,7 +33,11 @@ For each eligible transaction made after Tandem's local baseline, the app may ad
 
 ## 5. Optional Family Pro service
 
-Tandem contains development support for an optional Family Pro service using Supabase authentication and family-scoped synchronization. The current release does not expose sign-in, family synchronization, or new Family Pro sales. If that service is enabled later, this policy and the Play Data Safety disclosure will be updated before launch to describe its deployed region, retention, account deletion, and shared-family access.
+Where Family Pro is available in your installed version, you can create a cloud account using an email address and password, then create or join one caregiver family. Supabase Auth processes your email address, account identifier, authentication tokens, and sign-in information. Family setup processes the family name, your chosen display name and role, membership, and invitations. Invitation codes expire after seven days; the service stores a one-way hash of each code rather than the code itself.
+
+An active Family Pro subscription allows authorized family members to synchronize feeding, sleep, diaper, and pumping logs. These shared logs, their edits, and deletion history are stored in the family's Supabase project in India's Mumbai region (`ap-south-1`). Other active family members can view and edit the shared logs. Baby profile metadata, growth measurements, milestones, and other local notes are not part of this cloud sync. Access to sync and invitations closes when Family Pro is not verified, but previously stored family data is not automatically deleted at subscription expiry.
+
+To validate Family Pro, the server receives purchase-event identifiers, product and subscription state, and the app-user identifier from RevenueCat. It links that state to your cloud account so it can authorize family access. Payment-card details and care-log contents are not sent to RevenueCat. Cloud log changes keep version history, including deleted-log tombstones, until the owner deletes the family or their cloud account. These records are not public and are accessible only to currently authorized family members and service administrators who need access to operate or protect the service.
 
 ## 6. Service providers
 
@@ -42,12 +46,13 @@ Tandem uses:
 - **Google Firebase** for analytics and crash diagnostics.
 - **Google Play** for app distribution and payment processing.
 - **RevenueCat** for purchase validation.
+- **Supabase** for optional cloud authentication, family membership, and Family Pro synchronization.
 
 These providers process data under their own terms and may process it in countries other than yours. Service traffic uses encrypted HTTPS connections.
 
 ## 7. Retention and security
 
-Local records remain until you delete Tandem's local profile and data, clear the app's storage, or uninstall the app. Google Play, RevenueCat, and Firebase retain provider records under their settings, legal obligations, fraud-prevention needs, and applicable policies.
+Local records remain until you delete Tandem's local profile and data, clear the app's storage, or uninstall the app. Optional cloud family data, including log versions, remains until the family owner deletes the family or their cloud account. A caregiver who leaves or deletes their own account loses access, but the owner's family records remain. Deleting the owner account removes its family and shared logs. Uninstalling the app or deleting only local data does not delete a cloud account or family data. Google Play, RevenueCat, Firebase, and Supabase may retain provider records under their settings, legal obligations, fraud-prevention needs, and applicable policies. The family service may retain purchase-event receipts without a link to a deleted account for replay prevention.
 
 Tandem uses Android app-private storage, Android Keystore-backed encryption, disabled Android backup and transfer, and encrypted network connections. No storage or transmission method is completely risk-free. Protect access to your device and keep Android security updates current.
 
@@ -56,6 +61,8 @@ Tandem uses Android app-private storage, Android Keystore-backed encryption, dis
 In Tandem, open **Settings & Account → Privacy & Local Data → Delete Local Profile & Data**, review the warning, and confirm deletion. This removes the local profile and child records, Support Spark ledger, pending and celebration state, cached CSV exports created by Tandem, and Tandem's local encryption-key alias.
 
 You can also clear Tandem's storage in Android settings or uninstall the app. These actions do not delete provider purchase, analytics, or crash records. Copies you already shared with another app are outside Tandem's control.
+
+If you created a Family Pro cloud account, open **Settings & Account → Family account → Delete cloud account** while signed in, review the warning, and confirm. This permanently removes your cloud account; if you own a family, its shared logs and memberships are also deleted. If you are a caregiver in someone else's family, deleting your account removes your membership but not the owner's family records. You may separately delete local data using the steps above. If you cannot sign in, use the contact address below to request help with cloud account or family-data deletion; we may ask for the minimum information needed to verify ownership.
 
 For help identifying or deleting provider information that Black and Blue can administer, email **developer@blackandblue.co.in** with the subject **Tandem privacy request**. Include only the minimum locator requested by support. Do not send baby or caregiver records, passwords, payment-card information, authentication links, or raw purchase tokens.
 
